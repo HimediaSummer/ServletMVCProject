@@ -124,4 +124,31 @@ public class EmployeeDAO {
         return result;
     }
 
+    public int updateEmp(Connection con, EmployeeDTO emp) {
+        PreparedStatement pstmt = null;  // PreparedStatement 객체를 선언합니다.
+        int result = 0;  // 쿼리 실행 결과를 저장할 변수입니다.
+
+        // SQL 쿼리를 properties 파일에서 읽어옵니다.
+        String query = prop.getProperty("updateEmp");
+        // properties는 데이터베이스 연결 정보(왼쪽에 connection-info.properties) 라던지 SQL쿼리를 가져올수있슴
+
+
+        try {
+            //Connection 객체(con)를 사용하여 PreparedStatement 객체(pstmt)를 생성하고, query를 pstmt에 담는다.
+            pstmt = con.prepareStatement(query);
+
+            pstmt.setDate(1, emp.getEntDate());  // 첫 번째 ?에 emp의 입사일 값을 설정합니다.
+            pstmt.setString(2, emp.getEmpId());  // 두 번째 ?에 emp의 ID 값을 설정합니다.
+
+            // 쿼리를 실행하고, 영향을 받은 행의 수를 반환받습니다.
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();  // SQLException 발생 시 예외를 출력합니다.
+        } finally {
+            close(pstmt);  // PreparedStatement 자원을 해제합니다.
+        }
+
+        return result;  // 영향을 받은 행의 수를 반환합니다.
+    }
+
 }

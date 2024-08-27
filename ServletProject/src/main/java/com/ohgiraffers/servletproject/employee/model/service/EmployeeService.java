@@ -69,4 +69,21 @@ public class EmployeeService {
         return result;
     }
 
+    public int updateEmp(EmployeeDTO emp) {
+
+        Connection con = getConnection();  // 1. 데이터베이스 연결 생성
+
+        int result = empDAO.updateEmp(con, emp);  // 2. 직원 정보를 업데이트하는 DAO 메서드 호출
+
+        if (result > 0) {  // 3. 업데이트 성공 여부 확인
+            commit(con);  // 4. 성공하면 트랜잭션을 커밋
+        } else {
+            rollback(con);  // 5. 실패하면 트랜잭션을 롤백
+        }
+
+        close(con);  // 6. 데이터베이스 연결 종료
+
+        return result;  // 7. 업데이트 결과 반환
+    }
+
 }
