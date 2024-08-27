@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Chapter 14. MVC</title>
 </head>
 <body>
     <jsp:forward page="/WEB-INF/views/main/main.jsp"/>
