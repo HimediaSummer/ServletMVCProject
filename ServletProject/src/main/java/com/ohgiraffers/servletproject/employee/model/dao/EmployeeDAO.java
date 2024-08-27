@@ -26,6 +26,69 @@ public class EmployeeDAO {
         }
     }
 
+    // 기본 select emp id
+    public EmployeeDTO selectEmpById(Connection con, String empId) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+
+        EmployeeDTO selectedEmp = null;
+
+        String query = prop.getProperty("selectEmpById");
+
+        try {
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, empId);
+
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                selectedEmp = new EmployeeDTO();
+
+                selectedEmp.setEmpId(rset.getString("EMP_ID"));
+                selectedEmp.setEmpName(rset.getString("EMP_NAME"));
+                selectedEmp.setDeptCode(rset.getString("DEPT_CODE"));
+                selectedEmp.setJobCode(rset.getString("JOB_CODE"));
+                selectedEmp.setSalary(rset.getInt("SALARY"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+
+        return selectedEmp;
+    }
+
+    public String selectNewEmpId(Connection con) {
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+
+        String newEmpId = null;
+
+        String query = prop.getProperty("selectNewEmpId");
+
+        try {
+            pstmt = con.prepareStatement(query);
+
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                newEmpId = rset.getString("EMP_ID");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+
+        return newEmpId;
+    }
+
     // insert 사원등록
     public int insertEmp(Connection con, EmployeeDTO emp) {
 
