@@ -10,5 +10,20 @@ import static com.ohgiraffers.servletproject.common.jdbc.JDBCTemplate.*;
 
 /**/
 public class EmployeeService {
+    private final EmployeeDAO empDAO;
 
+    public EmployeeService() {
+        empDAO = new EmployeeDAO();     //empDAO를 부를때만 객체 생성
+    }
+
+    public EmployeeDTO selectOneEmpById(String empId) {
+
+        Connection con = getConnection();
+
+        EmployeeDTO selectedEmp = empDAO.selectEmpById(con, empId);
+
+        close(con);
+
+        return selectedEmp;
+    }
 }
