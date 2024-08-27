@@ -16,7 +16,7 @@ public class EmployeeService {
     private final EmployeeDAO empDAO;
 
     public EmployeeService() {
-        empDAO = new EmployeeDAO();     //empDAO를 부를때만 객체 생성
+        empDAO = new EmployeeDAO();
     }
 
     public EmployeeDTO selectOneEmpById(String empId) {
@@ -32,6 +32,23 @@ public class EmployeeService {
 
         /* 조회 결과를 반환한다. */
         return selectedEmp;
+    }
+
+    /* 직원 정보 전체 조회용 메소드 */
+    public List<EmployeeDTO> selectAllEmp() {
+
+        /* Connection 생성 */
+        Connection con = getConnection();
+
+        /* 비지니스 로직 */
+        /* 1. dao 호출하여 조회 */
+        List<EmployeeDTO> empList = empDAO.selectAllEmpList(con);
+
+        /* Connection 닫기 */
+        close(con);
+
+        /* 수행 결과 반환 */
+        return empList;
     }
 
     public String selectNewEmpId() {
@@ -85,24 +102,6 @@ public class EmployeeService {
         return result;  // 7. 업데이트 결과 반환
     }
 
-    private final EmployeeDAO empDAO;
-
-    public EmployeeService() {
-        empDAO = new EmployeeDAO();
-    }
-
-    public List<EmployeeDTO> selectAllEmp() {
-
-        Connection con = getConnection();
-
-        List<EmployeeDTO> empList = empDAO.selectAllEmpList(con);
-
-        close(con);
-
-        return empList;
-
-    }
-
     public int deleteEmp(String empId) {
         Connection con = getConnection();
 
@@ -115,6 +114,8 @@ public class EmployeeService {
         }
 
         close(con);
+
+        System.out.println("");
 
         return result;
     }
